@@ -1,0 +1,6 @@
+Product,GEO_LEVEL,GeographicLevelId,LevelName_EN
+9.84012E+11,0,A0000,Country
+9.84012E+11,1,A0002,Province or territory
+9.84012E+11,2,A0003,Census division
+9.84012E+11,3,A0005,Census subdivision
+9.84012E+11,4,S0512,Dissemination area

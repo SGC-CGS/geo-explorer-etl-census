@@ -1,0 +1,47 @@
+ThemeID,ThemeName_EN,ThemeName_FR,Sex_Dimension
+1,Population and dwellings,,0
+2,Age characteristics,,1
+3,Household and dwelling characteristics,,0
+4,Marital status,,1
+5,Family characteristics,,0
+5,Family characteristics,,1
+6,Household type,,0
+7,Knowledge of official languages,,1
+8,First official language spoken,,1
+9,Mother tongue,,1
+10,Language spoken most often at home,,1
+11,Other language spoken regularly at home,,1
+12,Income of individuals in 2015,,1
+13,Income of households in 2015,,0
+14,Income of economic families in 2015,,0
+14,Income of economic families in 2015,,1
+15,Low income in 2015,,1
+16,Knowledge of languages,,1
+17,Citizenship,,1
+18,Immigrant status and period of immigration,,1
+19,Age at immigration,,1
+20,Immigrants by selected place of birth,,1
+21,Recent immigrants by selected places of birth,,1
+22,Generation status,,1
+23,Admission category and applicant type,,1
+24,Aboriginal population,,1
+25,Visible minority population,,1
+26,Ethnic origin population,,1
+27,Household characteristics,,0
+28,"Highest certificate, diploma or degree",,1
+29,Major field of study - Classification of Instructional Programs (CIP) 2016,,1
+30,Location of study compared with province or territory of residence with countries outside Canada,,1
+31,Labour force status,,1
+32,Work activity during the reference year,,1
+33,Class of worker,,1
+34,Occupation - National Occupational Classification (NOC) 2016,,1
+35,Industry - North American Industry Classification System (NAICS) 2012,,1
+36,Place of work status,,1
+37,Commuting destination,,1
+38,Main mode of commuting,,1
+39,Commuting duration,,1
+40,Time leaving for work,,1
+41,Language used most often at work,,1
+42,Other language used regularly at work,,1
+43,Mobility status - Place of residence 1 year ago,,1
+44,Mobility status - Place of residence 5 years ago,,1

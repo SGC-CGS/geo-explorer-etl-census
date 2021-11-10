@@ -1,0 +1,10 @@
+# Data files
+/data/*
+!/data/interim/.gitkeep
+!/data/processed/.gitkeep
+!/data/raw/.gitkeep
+
+# Environment files/folders
+.idea/
+__pycache__/
+venv/
