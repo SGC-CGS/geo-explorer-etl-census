@@ -44,7 +44,8 @@ class Creator:
 
         logger.info("Generate Dissemination Area (DA) file.")
 
-        self.da = helpers.process_da('./data/raw/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
+        self.da = helpers.process_da(
+            './data/raw/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
 
 
     def generate_can_prov_cd_csd(self):

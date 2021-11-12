@@ -73,7 +73,7 @@ def process_da(da_file):
 
     # Drop the following columns.
     result = result.drop(
-        columns=["CSD_TYPE_NAME", "ALT_GEO_CODE", "Notes: Profile of Dissemination Areas (2247)", "DATA_QUALITY_FLAG"])
+        columns=["MemberId", "CSD_TYPE_NAME", "ALT_GEO_CODE", "Notes: Profile of Dissemination Areas (2247)", "DATA_QUALITY_FLAG"])
 
     # Rename the following columns.
     result = result.rename(columns={"CENSUS_YEAR": "REF_DATE", "GEO_CODE (POR)": "GEO_CODE", "GEO_NAME": "GEO",
@@ -115,7 +115,7 @@ def process_can_prov_cd_csd(ca_prov_cd_csd_file):
 
     # Drop the following columns.
     result_ca_prov_cd_csd = result_can_prov_cd_csd.drop(
-        columns=["ALT_GEO_CODE", "CSD_TYPE_NAME", "DATA_QUALITY_FLAG",
+        columns=["MemberId", "ALT_GEO_CODE", "CSD_TYPE_NAME", "DATA_QUALITY_FLAG",
                  "Notes: Profile of Census Divisions/Census Subdivisions (2247)"])
 
     # Replace GEO_LEVEL == .
@@ -130,7 +130,7 @@ def process_can_prov_cd_csd(ca_prov_cd_csd_file):
         columns={"CENSUS_YEAR": "REF_DATE", "GEO_CODE (POR)": "GEO_CODE", "GEO_NAME": "GEO",
                  "GNR": "Short form: Non-response", "GNR_LF": "Long form: Non-response",
                  "DIM: Profile of Census Divisions/Census Subdivisions (2247)": "Member",
-                 "Member ID: Profile of Census Metropolitan Areas/Census Agglomerations (2247)": "MemberId",
+                 "Member ID: Census Divisions/Census Subdivisions (2247)": "MemberId",
                  "Dim: Sex (3): Member ID: [1]: Total - Sex": "Total",
                  "Dim: Sex (3): Member ID: [2]: Male": "Male",
                  "Dim: Sex (3): Member ID: [3]: Female": "Female"})
@@ -164,6 +164,11 @@ def process_cma_ca(cma_ca_file):
                                  how = 'inner',
                                  left_on = ['Member ID: Profile of Census Metropolitan Areas/Census Agglomerations (2247)'],
                                  right_on=['MemberId'])
+
+    # Drop the following columns.
+    result_cma_ca = result_cma_ca.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Census Metropolitan Areas/Census Agglomerations (2247)"])
 
     # Replace GEO_LEVEL == 2,3.
     result_cma_ca["GEO_LEVEL"] = result_cma_ca["GEO_LEVEL"].replace(2, 'S0503')
@@ -211,6 +216,11 @@ def process_er(er_file):
                                  left_on=['Member ID: Profile of Economic Regions (2247)'],
                                  right_on=['MemberId'])
 
+    # Drop the following columns.
+    result_er = result_er.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Economic Regions (2247)"])
+
     # Replace GEO_LEVEL == 2.
     result_er["GEO_LEVEL"] = result_er["GEO_LEVEL"].replace(2, 'S0500')
 
@@ -252,6 +262,11 @@ def process_pc(pc_file):
                          how='inner',
                          left_on=['Member ID: Profile of Population Centres (2247)'],
                          right_on=['MemberId'])
+
+    # Drop the following columns.
+    result_pc = result_pc.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Population Centres (2247)"])
 
     # Replace GEO_LEVEL == 1.
     result_pc["GEO_LEVEL"] = result_pc["GEO_LEVEL"].replace(1, 'S0510')
@@ -297,6 +312,11 @@ def process_hr(hr_file):
                          left_on=['Member ID: Profile of Health Regions (2247)'],
                          right_on=['MemberId'])
 
+    # Drop the following columns.
+    result_hr = result_hr.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Health Regions (2247)"])
+
     # Replace GEO_LEVEL == 1.
     result_hr["GEO_LEVEL"] = result_hr["GEO_LEVEL"].replace(2, 'A0007')
 
@@ -338,6 +358,11 @@ def process_dp(dp_file):
                          how='inner',
                          left_on=['Member ID: Profile of Designated Places (2247)'],
                          right_on=['MemberId'])
+
+    # Drop the following columns.
+    result_dp = result_dp.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Designated Places (2247)"])
 
     # Replace GEO_LEVEL == 1.
     result_dp["GEO_LEVEL"] = result_dp["GEO_LEVEL"].replace(1, 'A0006')
@@ -383,6 +408,12 @@ def process_fed(fed_file):
                          how='inner',
                          left_on=['Member ID: Profile of Federal Electoral Districts (2013 Representation Order) (2247)'],
                          right_on=['MemberId'])
+
+    # Drop the following columns.
+    result_fed = result_fed.drop(
+        columns=["MemberId", "ALT_GEO_CODE", "DATA_QUALITY_FLAG",
+                 "Notes: Profile of Federal Electoral Districts (2013 Representation Order) (2247)"])
+
 
     # Replace GEO_LEVEL == 1.
     result_fed["GEO_LEVEL"] = result_fed["GEO_LEVEL"].replace(1, 'A0006')
@@ -433,7 +464,7 @@ def process_fsa(fsa_file):
     
     # Drop the following columns.
     result_fsa = result_fsa.drop(
-        columns=["ALT_GEO_CODE", "Notes: Profile of Forward Sortation Areas (2247)", "DATA_QUALITY_FLAG"])
+        columns=["MemberId", "ALT_GEO_CODE", "Notes: Profile of Forward Sortation Areas (2247)", "DATA_QUALITY_FLAG"])
     
     # Replace GEO_LEVEL == 1.
     result_fsa["GEO_LEVEL"] = result_fsa["GEO_LEVEL"].replace(2, 'A0011')
