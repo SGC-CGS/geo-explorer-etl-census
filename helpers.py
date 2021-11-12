@@ -410,3 +410,54 @@ def process_fed(fed_file):
                          result_fed["GEO"]
 
     return result_fed
+
+def process_fsa(fsa_file):
+
+    # Read the source test file.
+    # The dask.dataframe package may be needed for reading larger CSV files.
+    fsa = dd.read_csv(fsa_file, blocksize="10MB",
+                     dtype={'Dim: Sex (3): Member ID: [1]: Total - Sex': 'object',
+                            'ALT_GEO_CODE': 'object',
+                            'GEO_CODE (POR)': 'object'}, low_memory=False)
+
+    # Filter source file for GEO_LEVEL equal to 2.
+    fsa = fsa[fsa.GEO_LEVEL == 2]
+
+    fsa["Member ID: Profile of Forward Sortation Areas (2247)"] = \
+        fsa["Member ID: Profile of Forward Sortation Areas (2247)"].astype('str')
+
+    result_fsa = fsa.merge(members_by_themeID.current_members,
+                         how='inner',
+                         left_on=['Member ID: Profile of Forward Sortation Areas (2247)'],
+                         right_on=['MemberId'])
+    
+    # Drop the following columns.
+    result_fsa = result_fsa.drop(
+        columns=["ALT_GEO_CODE", "Notes: Profile of Forward Sortation Areas (2247)", "DATA_QUALITY_FLAG"])
+    
+    # Replace GEO_LEVEL == 1.
+    result_fsa["GEO_LEVEL"] = result_fsa["GEO_LEVEL"].replace(2, 'A0011')
+
+    # Rename the following columns.
+    result_fsa = result_fsa.rename(
+        columns={"CENSUS_YEAR": "REF_DATE", "GEO_CODE (POR)": "GEO_CODE", "GEO_NAME": "GEO",
+                 "GNR": "Short form: Non-response", "GNR_LF": "Long form: Non-response",
+                 "DIM: Profile of Forward Sortation Areas (2247)": "Member",
+                 "Member ID: Profile of Forward Sortation Areas (2247)": "MemberId",
+                 "Dim: Sex (3): Member ID: [1]: Total - Sex": "Total",
+                 "Dim: Sex (3): Member ID: [2]: Male": "Male",
+                 "Dim: Sex (3): Member ID: [3]: Female": "Female"})
+
+    # Create a copy of the REF_DATE column.
+    result_fsa["REF_DATE_COPY"] = result_fsa["REF_DATE"]
+
+    # Convert column data types to 'str'.
+    result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
+        result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+
+    # Create a new column called "DGUID" based on combining the following columns.
+    result_fsa["DGUID"] = result_fsa["REF_DATE_COPY"] + \
+                         result_fsa["GEO_LEVEL"] + \
+                         result_fsa["GEO"]
+    
+    return result_fsa

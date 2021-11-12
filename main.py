@@ -1,3 +1,4 @@
+import dask.dataframe as dd
 import helpers
 import logging
 import sys
@@ -43,7 +44,7 @@ class Creator:
 
         logger.info("Generate Dissemination Area (DA) file.")
 
-        self.da = helpers.process_da('./data/sample/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
+        self.da = helpers.process_da('./data/raw/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
 
 
     def generate_can_prov_cd_csd(self):
@@ -52,7 +53,7 @@ class Creator:
 
         self.ca_prov_cd_csd = \
             helpers.process_can_prov_cd_csd(
-                './data/sample/census/98-401-X2016055_eng_CSV/98-401-X2016055_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016055_eng_CSV/98-401-X2016055_English_CSV_data.csv')
 
 
     def generate_cma_ca(self):
@@ -61,7 +62,7 @@ class Creator:
 
         self.cma_ca = \
             helpers.process_cma_ca(
-                './data/sample/census/98-401-X2016041_eng_CSV/98-401-X2016041_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016041_eng_CSV/98-401-X2016041_English_CSV_data.csv')
 
 
     def generate_er(self):
@@ -70,7 +71,7 @@ class Creator:
 
         self.er = \
             helpers.process_er(
-                './data/sample/census/98-401-X2016049_eng_CSV/98-401-X2016049_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016049_eng_CSV/98-401-X2016049_English_CSV_data.csv')
 
 
     def generate_pc(self):
@@ -79,7 +80,7 @@ class Creator:
 
         self.pc = \
             helpers.process_pc(
-                './data/sample/census/98-401-X2016048_eng_CSV/98-401-X2016048_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016048_eng_CSV/98-401-X2016048_English_CSV_data.csv')
 
 
     def generate_hr(self):
@@ -88,7 +89,7 @@ class Creator:
 
         self.hr = \
             helpers.process_hr(
-                './data/sample/census/98-401-X2016058_eng_CSV/98-401-X2016058_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016058_eng_CSV/98-401-X2016058_English_CSV_data.csv')
 
 
     def generate_dp(self):
@@ -97,7 +98,7 @@ class Creator:
 
         self.dp = \
             helpers.process_dp(
-                './data/sample/census/98-401-X2016047_eng_CSV/98-401-X2016047_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016047_eng_CSV/98-401-X2016047_English_CSV_data.csv')
 
 
     def generate_fed(self):
@@ -106,7 +107,17 @@ class Creator:
 
         self.fed = \
             helpers.process_fed(
-                './data/sample/census/98-401-X2016045_eng_CSV/98-401-X2016045_English_CSV_data.csv')
+                './data/raw/census/98-401-X2016045_eng_CSV/98-401-X2016045_English_CSV_data.csv')
+
+
+    def generate_fsa(self):
+
+        logger.info("Generate Forward Sortation Area (FSA) file.")
+
+        self.fsa = \
+            helpers.process_fsa(
+                './data/raw/census/98-401-X2016046_eng_CSV/98-401-X2016046_English_CSV_data.csv')
+
 
 
     def execute(self):
@@ -121,6 +132,7 @@ class Creator:
         self.generate_hr()
         self.generate_dp()
         self.generate_fed()
+        self.generate_fsa()
 
 
 
