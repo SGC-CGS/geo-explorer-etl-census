@@ -91,12 +91,15 @@ def process_da(da_file):
     result["REF_DATE_COPY"] = result["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     # result["DGUID"] = result[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str').agg("".join, axis=1)
-    result["DGUID"] = result["REF_DATE_COPY"] + result["GEO_LEVEL"] + result["GEO"]
+    result["DGUID"] = result["REF_DATE_COPY"] + result["GEO_LEVEL"] + result["GEO_CODE"]
+
+    result = result.drop(
+        columns=["REF_DATE_COPY"])
 
     return result
 
@@ -114,7 +117,7 @@ def process_can_prov_cd_csd(ca_prov_cd_csd_file):
                                  right_on=['MemberId'])
 
     # Drop the following columns.
-    result_ca_prov_cd_csd = result_can_prov_cd_csd.drop(
+    result_can_prov_cd_csd = result_can_prov_cd_csd.drop(
         columns=["MemberId", "ALT_GEO_CODE", "CSD_TYPE_NAME", "DATA_QUALITY_FLAG",
                  "Notes: Profile of Census Divisions/Census Subdivisions (2247)"])
 
@@ -130,23 +133,26 @@ def process_can_prov_cd_csd(ca_prov_cd_csd_file):
         columns={"CENSUS_YEAR": "REF_DATE", "GEO_CODE (POR)": "GEO_CODE", "GEO_NAME": "GEO",
                  "GNR": "Short form: Non-response", "GNR_LF": "Long form: Non-response",
                  "DIM: Profile of Census Divisions/Census Subdivisions (2247)": "Member",
-                 "Member ID: Census Divisions/Census Subdivisions (2247)": "MemberId",
-                 "Dim: Sex (3): Member ID: [1]: Total - Sex": "Total",
-                 "Dim: Sex (3): Member ID: [2]: Male": "Male",
-                 "Dim: Sex (3): Member ID: [3]: Female": "Female"})
+                 "Member ID: Profile of Census Divisions/Census Subdivisions (2247)": "MemberId",
+                 "Dim: Sex (3): Member ID: [1]: Total - Sex" : "Total",
+                 "Dim: Sex (3): Member ID: [2]: Male" : "Male",
+                 "Dim: Sex (3): Member ID: [3]: Female" : "Female"})
 
     # Create a copy of the REF_DATE column.
     result_can_prov_cd_csd["REF_DATE_COPY"] = result_can_prov_cd_csd["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_can_prov_cd_csd[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_can_prov_cd_csd[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_can_prov_cd_csd[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_can_prov_cd_csd[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     # result["DGUID"] = result[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str').agg("".join, axis=1)
     result_can_prov_cd_csd["DGUID"] = result_can_prov_cd_csd["REF_DATE_COPY"] + \
                                       result_can_prov_cd_csd["GEO_LEVEL"] + \
-                                      result_can_prov_cd_csd["GEO"]
+                                      result_can_prov_cd_csd["GEO_CODE"]
+
+    result_can_prov_cd_csd = result_can_prov_cd_csd.drop(
+        columns=["REF_DATE_COPY"])
 
     return result_can_prov_cd_csd
 
@@ -188,13 +194,16 @@ def process_cma_ca(cma_ca_file):
     result_cma_ca["REF_DATE_COPY"] = result_cma_ca["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_cma_ca[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_cma_ca[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_cma_ca[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_cma_ca[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_cma_ca["DGUID"] = result_cma_ca["REF_DATE_COPY"] + \
                              result_cma_ca["GEO_LEVEL"] + \
-                             result_cma_ca["GEO"]
+                             result_cma_ca["GEO_CODE"]
+
+    result_cma_ca = result_cma_ca.drop(
+        columns=["REF_DATE_COPY"])
 
     return result_cma_ca
 
@@ -492,3 +501,4 @@ def process_fsa(fsa_file):
                          result_fsa["GEO"]
     
     return result_fsa
+
