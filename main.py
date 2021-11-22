@@ -1,5 +1,6 @@
-import dask.dataframe as dd
 from dask.array import from_array as fa
+import dask.dataframe as dd
+import numpy as np
 import helpers
 import logging
 import sys
@@ -147,14 +148,13 @@ class Creator:
 
         ### ExpandTableColumn
 
-        # renamed = joined.rename(columns={"ThemeMember": "ThemeMemberId"})
-        
+        renamed = joined.rename(columns={"ThemeMember": "ThemeMemberId2"})
 
         unpivot = dd.melt(
-            joined, 
+            renamed, 
             value_vars = ["Total", "Male", "Female"],
             id_vars = ["REF_DATE", "GEO_CODE", "GEO_LEVEL","GEO", "Member","MemberId", "DGUID", "ThemeID", 
-                       "Sex_Dimension", "UOM", "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "DECIMALS", "ThemeMember", "ThemeMemberId"],
+                       "Sex_Dimension", "UOM", "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "DECIMALS", "ThemeMemberId2"],
             var_name="Sex",
             value_name="Indicator")
 
@@ -168,7 +168,27 @@ class Creator:
         unpivot["VECTOR_Index"] = ''
         unpivot = unpivot.assign(VECTOR_Index = unpivot.reset_index().index + 98401000100)
 
-        unpivot.compute().to_csv("./data/processed/unpivot.csv", index=False)
+        unpivot["VECTOR_Index"] = unpivot["VECTOR_Index"].astype('str')
+
+        unpivot["VECTOR"] = "v" + unpivot["VECTOR_Index"]
+
+        unpivot = unpivot.drop(columns=["VECTOR_Index"])
+
+        # Rename the following columns.
+        unpivot = unpivot.rename(columns={"Indicator": "Value"})
+
+        sexid = lambda x: "1" if x == "Total" else "2" if x == "Male" else "3" if x == "Female" else ""
+        unpivot = unpivot.assign(SexId = unpivot.Sex.apply(sexid, meta=('Sex', 'object')))
+
+        unpivot["SYMBOL"] = ''
+        unpivot["TERMINATED"] = ''
+
+        unpivot = unpivot[["REF_DATE", "GEO", "DGUID", "Member", "Sex", "UOM", 
+                            "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", "Value", 
+                            "STATUS", "SYMBOL", "TERMINATED", "DECIMALS", "ThemeID", 
+                            "Sex_Dimension", "ThemeMemberId2", "SexId"]]
+
+        unpivot.compute().to_csv("./data/interim/unpivot.csv", index=False)
         # joined.compute().to_csv("./data/processed/joined.csv", index=False)
 
 

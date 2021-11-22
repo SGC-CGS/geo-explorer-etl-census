@@ -247,13 +247,13 @@ def process_er(er_file):
     result_er["REF_DATE_COPY"] = result_er["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_er[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_er[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_er[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_er[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_er["DGUID"] = result_er["REF_DATE_COPY"] + \
                              result_er["GEO_LEVEL"] + \
-                             result_er["GEO"]
+                             result_er["GEO_CODE"]
 
     return result_er
 
@@ -294,13 +294,13 @@ def process_pc(pc_file):
     result_pc["REF_DATE_COPY"] = result_pc["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_pc[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_pc[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_pc[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_pc[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_pc["DGUID"] = result_pc["REF_DATE_COPY"] + \
                          result_pc["GEO_LEVEL"] + \
-                         result_pc["GEO"]
+                         result_pc["GEO_CODE"]
 
     return result_pc
 
@@ -343,13 +343,13 @@ def process_hr(hr_file):
     result_hr["REF_DATE_COPY"] = result_hr["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_hr[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_hr[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_hr[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_hr[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_hr["DGUID"] = result_hr["REF_DATE_COPY"] + \
                          result_hr["GEO_LEVEL"] + \
-                         result_hr["GEO"]
+                         result_hr["GEO_CODE"]
 
     return result_hr
 
@@ -390,13 +390,13 @@ def process_dp(dp_file):
     result_dp["REF_DATE_COPY"] = result_dp["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_dp[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_dp[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_dp[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_dp[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_dp["DGUID"] = result_dp["REF_DATE_COPY"] + \
                          result_dp["GEO_LEVEL"] + \
-                         result_dp["GEO"]
+                         result_dp["GEO_CODE"]
 
     return result_dp
 
@@ -441,13 +441,13 @@ def process_fed(fed_file):
     result_fed["REF_DATE_COPY"] = result_fed["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_fed[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_fed[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_fed[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_fed[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_fed["DGUID"] = result_fed["REF_DATE_COPY"] + \
                          result_fed["GEO_LEVEL"] + \
-                         result_fed["GEO"]
+                         result_fed["GEO_CODE"]
 
     return result_fed
 
@@ -492,13 +492,13 @@ def process_fsa(fsa_file):
     result_fsa["REF_DATE_COPY"] = result_fsa["REF_DATE"]
 
     # Convert column data types to 'str'.
-    result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]] = \
-        result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO"]].astype('str')
+    result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]] = \
+        result_fsa[["REF_DATE_COPY", "GEO_LEVEL", "GEO_CODE"]].astype('str')
 
     # Create a new column called "DGUID" based on combining the following columns.
     result_fsa["DGUID"] = result_fsa["REF_DATE_COPY"] + \
                          result_fsa["GEO_LEVEL"] + \
-                         result_fsa["GEO"]
+                         result_fsa["GEO_CODE"]
     
     return result_fsa
 
