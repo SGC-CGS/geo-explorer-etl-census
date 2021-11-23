@@ -34,13 +34,11 @@ class Creator:
         self.profile_indicators, self.geography_level, self.theme = \
         helpers.convert_param_file_data_types(self.profile_indicators, self.geography_level, self.theme)
 
-
     def generate_members_by_themeID(self):
 
         logger.info("Generate members by Theme ID.")
 
         self.current_members = helpers.members_by_themeID(self.profile_indicators, 11)
-
 
     def generate_da(self):
 
@@ -50,7 +48,6 @@ class Creator:
             './data/raw/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
 
         # self.da.compute().to_csv("./data/processed/da.csv", index=False)
-
 
     def generate_can_prov_cd_csd(self):
 
@@ -139,59 +136,23 @@ class Creator:
         # Combine can_prov_csd_cd, cma_ca, da.
         combine = self.can_prov_cd_csd.append(self.cma_ca, self.da)
 
-        combine = combine.drop(columns=["Short form: Non-response", "Long form: Non-response"])
-        
-        self.profile_indicators["MemberId"] = self.profile_indicators["MemberId"].astype('str')
+        self.product_en = helpers.process_product_en(combine, self.profile_indicators)
 
-        joined = combine.merge(self.profile_indicators, how='left',
-                               left_on=['MemberId'], right_on=['MemberId'])
+        # self.product_en.compute().to_csv("./data/interim/product_en.csv", index=False)
 
-        ### ExpandTableColumn
+    def generate_product_en_no_sex(self):
 
-        renamed = joined.rename(columns={"ThemeMember": "ThemeMemberId2"})
+        logger.info("Generate Product (EN) No Sex.")
 
-        unpivot = dd.melt(
-            renamed, 
-            value_vars = ["Total", "Male", "Female"],
-            id_vars = ["REF_DATE", "GEO_CODE", "GEO_LEVEL","GEO", "Member","MemberId", "DGUID", "ThemeID", 
-                       "Sex_Dimension", "UOM", "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "DECIMALS", "ThemeMemberId2"],
-            var_name="Sex",
-            value_name="Indicator")
+        self.product_en_no_sex = helpers.process_product_en_no_sex(self.product_en)
 
-        unpivot["STATUS"] = ""
+    def generate_product_en_sex(self):
 
-        unpivot["Indicator"] = unpivot["Indicator"].replace('...', '')
-        unpivot["Indicator"] = unpivot["Indicator"].replace('..', '')
-        unpivot["Indicator"] = unpivot["Indicator"].replace('F', '')
-        unpivot["Indicator"] = unpivot["Indicator"].replace('x', '')
+        logger.info("Generate Product (EN) Sex.")
 
-        unpivot["VECTOR_Index"] = ''
-        unpivot = unpivot.assign(VECTOR_Index = unpivot.reset_index().index + 98401000100)
+        self.product_en_sex = helpers.process_product_en_sex(self.product_en)
 
-        unpivot["VECTOR_Index"] = unpivot["VECTOR_Index"].astype('str')
-
-        unpivot["VECTOR"] = "v" + unpivot["VECTOR_Index"]
-
-        unpivot = unpivot.drop(columns=["VECTOR_Index"])
-
-        # Rename the following columns.
-        unpivot = unpivot.rename(columns={"Indicator": "Value"})
-
-        sexid = lambda x: "1" if x == "Total" else "2" if x == "Male" else "3" if x == "Female" else ""
-        unpivot = unpivot.assign(SexId = unpivot.Sex.apply(sexid, meta=('Sex', 'object')))
-
-        unpivot["SYMBOL"] = ''
-        unpivot["TERMINATED"] = ''
-
-        unpivot = unpivot[["REF_DATE", "GEO", "DGUID", "Member", "Sex", "UOM", 
-                            "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", "Value", 
-                            "STATUS", "SYMBOL", "TERMINATED", "DECIMALS", "ThemeID", 
-                            "Sex_Dimension", "ThemeMemberId2", "SexId"]]
-
-        unpivot.compute().to_csv("./data/interim/unpivot.csv", index=False)
-        # joined.compute().to_csv("./data/processed/joined.csv", index=False)
-
-
+        self.product_en_sex.compute().to_csv("./data/interim/product_en_sex.csv", index=False)
 
 
     def execute(self):
@@ -208,6 +169,8 @@ class Creator:
         self.generate_fed()
         self.generate_fsa()
         self.generate_product_en()
+        self.generate_product_en_no_sex()
+        self.generate_product_en_sex()
 
 
 

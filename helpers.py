@@ -502,3 +502,91 @@ def process_fsa(fsa_file):
     
     return result_fsa
 
+def process_product_en(combine, profile_indicator_file):
+
+    combine = combine.drop(columns=["Short form: Non-response", "Long form: Non-response"])
+        
+    profile_indicator_file["MemberId"] = profile_indicator_file["MemberId"].astype('str')
+
+    joined = combine.merge(profile_indicator_file, how='left',
+                               left_on=['MemberId'], right_on=['MemberId'])
+
+    ### ExpandTableColumn
+
+    renamed = joined.rename(columns={"ThemeMember": "ThemeMemberId2"})
+
+    unpivot = dd.melt(
+        renamed, 
+        value_vars = ["Total", "Male", "Female"],
+        id_vars = ["REF_DATE", "GEO_CODE", "GEO_LEVEL","GEO", "Member","MemberId", "DGUID", "ThemeID", 
+                   "Sex_Dimension", "UOM", "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "DECIMALS", "ThemeMemberId2"],
+        var_name="Sex",
+        value_name="Indicator")
+
+    unpivot["STATUS"] = ""
+
+    unpivot["Indicator"] = unpivot["Indicator"].replace('...', '')
+    unpivot["Indicator"] = unpivot["Indicator"].replace('..', '')
+    unpivot["Indicator"] = unpivot["Indicator"].replace('F', '')
+    unpivot["Indicator"] = unpivot["Indicator"].replace('x', '')
+
+    unpivot["VECTOR_Index"] = ''
+    unpivot = unpivot.assign(VECTOR_Index = unpivot.reset_index().index + 98401000100)
+
+    unpivot["VECTOR_Index"] = unpivot["VECTOR_Index"].astype('str')
+
+    unpivot["VECTOR"] = "v" + unpivot["VECTOR_Index"]
+
+    unpivot = unpivot.drop(columns=["VECTOR_Index"])
+
+    # Rename the following columns.
+    unpivot = unpivot.rename(columns={"Indicator": "Value"})
+
+    sexid = lambda x: "1" if x == "Total" else "2" if x == "Male" else "3" if x == "Female" else ""
+    unpivot = unpivot.assign(SexId = unpivot.Sex.apply(sexid, meta=('Sex', 'object')))
+
+    unpivot["SYMBOL"] = ''
+    unpivot["TERMINATED"] = ''
+
+    unpivot = unpivot[["REF_DATE", "GEO", "DGUID", "Member", "Sex", "UOM", 
+                       "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", "Value", 
+                       "STATUS", "SYMBOL", "TERMINATED", "DECIMALS", "ThemeID", 
+                       "Sex_Dimension", "ThemeMemberId2", "SexId"]]
+
+    return unpivot
+
+def process_product_en_no_sex(product_en):
+
+    product_en_no_sex = product_en[product_en.Sex_Dimension == 0]
+
+    product_en_no_sex = product_en_no_sex[product_en_no_sex.Sex == 'Total']
+
+    product_en_no_sex["ThemeMemberId2"] = product_en_no_sex["ThemeMemberId2"].astype('str')
+
+    product_en_no_sex["COORDINATE"] = "1." + product_en_no_sex["ThemeMemberId2"]
+
+    product_en_no_sex = product_en_no_sex.drop(columns = ["ThemeMemberId2"])
+
+    product_en_no_sex = product_en_no_sex[["REF_DATE", "DGUID", "GEO", "Member", "UOM", 
+                                           "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
+                                           "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
+
+    return product_en_no_sex
+
+def process_product_en_sex(product_en):
+
+    product_en_sex = product_en[product_en.Sex_Dimension == 1]
+
+    product_en_sex["ThemeMemberId2"] = product_en_sex["ThemeMemberId2"].astype('str')
+
+    product_en_sex["SexId"] = product_en_sex["SexId"].astype('str')
+
+    product_en_sex["COORDINATE"] = "1." + product_en_sex["ThemeMemberId2"] + "." + product_en_sex["SexId"]
+
+    product_en_sex = product_en_sex.drop(columns = ["ThemeMemberId2"])
+
+    product_en_sex = product_en_sex[["REF_DATE", "DGUID", "GEO", "Member", "UOM", 
+                                     "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
+                                     "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
+
+    return product_en_sex
