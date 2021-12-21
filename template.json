@@ -1,0 +1,42 @@
+{
+    "productId": "",
+    "cubeTitleEn": "",
+    "cubeTitleFr": "",
+    "cubeStartDate": "",
+    "cubeEndDate": "",
+    "frequencyCode": 0,
+    "releaseTime": "",
+    "subject": "",
+    "subjectCode": [],
+    "surveyCode": [],
+    "dimension": [
+        {
+            "dimensionPositionId": 1,
+            "dimensionNameEn": "Geography",
+            "dimensionNameFr": "Géographie",
+            "hasUom": false,
+            "member": []
+        },
+        {
+            "dimensionPositionId": 2,
+            "dimensionNameEn": "",
+            "dimensionNameFr": "",
+            "hasUom": false,
+            "member": []
+        },
+        {
+            "dimensionPositionId": 3,
+            "dimensionNameEn": "",
+            "dimensionNameFr": "",
+            "hasUom": false,
+            "member": []
+        },
+        {
+            "dimensionPositionId": 4,
+            "dimensionNameEn": "",
+            "dimensionNameFr": "",
+            "hasUom": true,
+            "member": []
+        }
+    ]
+}

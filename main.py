@@ -138,7 +138,7 @@ class Creator:
 
         self.product_en = helpers.process_product_en(combine, self.profile_indicators)
 
-        # self.product_en.compute().to_csv("./data/interim/product_en.csv", index=False)
+        self.product_en.compute().to_csv("./data/interim/product_en.csv", index=False)
 
     def generate_product_en_no_sex(self):
 
@@ -146,13 +146,15 @@ class Creator:
 
         self.product_en_no_sex = helpers.process_product_en_no_sex(self.product_en)
 
+        self.product_en_no_sex.compute().to_csv("./data/processed/product_en_no_sex.csv", index=False)
+
     def generate_product_en_sex(self):
 
         logger.info("Generate Product (EN) Sex.")
 
         self.product_en_sex = helpers.process_product_en_sex(self.product_en)
 
-        self.product_en_sex.compute().to_csv("./data/interim/product_en_sex.csv", index=False)
+        self.product_en_sex.compute().to_csv("./data/processed/product_en_sex.csv", index=False)
 
 
     def execute(self):
