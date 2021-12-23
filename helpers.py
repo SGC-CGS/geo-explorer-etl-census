@@ -567,7 +567,7 @@ def process_product_en_no_sex(product_en):
 
     product_en_no_sex = product_en_no_sex.drop(columns = ["ThemeMemberId2"])
 
-    product_en_no_sex = product_en_no_sex[["REF_DATE", "DGUID", "GEO", "Member", "UOM", 
+    product_en_no_sex = product_en_no_sex[["REF_DATE", "DGUID", "GEO", "Member", "Sex", "UOM", 
                                            "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
                                            "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
 
@@ -585,7 +585,7 @@ def process_product_en_sex(product_en):
 
     product_en_sex = product_en_sex.drop(columns = ["ThemeMemberId2"])
 
-    product_en_sex = product_en_sex[["REF_DATE", "DGUID", "GEO", "Member", "UOM", 
+    product_en_sex = product_en_sex[["REF_DATE", "DGUID", "GEO", "Member", "Sex", "UOM", 
                                      "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
                                      "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
 

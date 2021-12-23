@@ -23,5 +23,13 @@ for key, grp in df.groupby(['Member']):
       "memberUomCode": "."
    })
 
+for key, grp in df.groupby(['Sex']):
+   j["dimension"][2]["member"].append({
+      "memberId": ".",
+      "memberNameEn": key,
+      "memberNameFr": ".",
+      "memberUomCode": "."
+   })
+
 with open("./data/processed/metadata.json", "w") as outfile:
     json.dump(j, outfile, indent=4)

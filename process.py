@@ -138,7 +138,7 @@ class Creator:
 
         self.product_en = helpers.process_product_en(combine, self.profile_indicators)
 
-        self.product_en.compute().to_csv("./data/interim/product_en.csv", index=False)
+        self.product_en.compute().to_csv("./data/processed/product_en.csv", index=False)
 
     def generate_product_en_no_sex(self):
 
