@@ -1,3 +1,4 @@
+import pandas as pd
 import dask.dataframe as dd
 import sys
 
@@ -563,13 +564,21 @@ def process_product_en_no_sex(product_en):
 
     product_en_no_sex["ThemeMemberId2"] = product_en_no_sex["ThemeMemberId2"].astype('str')
 
-    product_en_no_sex["COORDINATE"] = "1." + product_en_no_sex["ThemeMemberId2"]
+    pd_product_en_no_sex = product_en_no_sex.compute()
+
+    pd_product_en_no_sex['TEMP_COORD'] = pd.factorize(pd_product_en_no_sex.GEO)[0] + 1
+
+    product_en_no_sex = dd.from_pandas(pd_product_en_no_sex, npartitions=2)
+
+    product_en_no_sex["TEMP_COORD"] = product_en_no_sex["TEMP_COORD"].astype('str')
+
+    product_en_no_sex["COORDINATE"] = product_en_no_sex["TEMP_COORD"] + "." + product_en_no_sex["ThemeMemberId2"]
 
     product_en_no_sex = product_en_no_sex.drop(columns = ["ThemeMemberId2"])
 
     product_en_no_sex = product_en_no_sex[["REF_DATE", "DGUID", "GEO", "Member", "Sex", "UOM", 
                                            "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
-                                           "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
+                                           "COORDINATE", "Value", "STATUS", "DECIMALS"]]
 
     return product_en_no_sex
 
@@ -581,12 +590,20 @@ def process_product_en_sex(product_en):
 
     product_en_sex["SexId"] = product_en_sex["SexId"].astype('str')
 
-    product_en_sex["COORDINATE"] = "1." + product_en_sex["ThemeMemberId2"] + "." + product_en_sex["SexId"]
+    pd_product_en_sex = product_en_sex.compute()
+
+    pd_product_en_sex['TEMP_COORD'] = pd.factorize(pd_product_en_sex.GEO)[0] + 1
+
+    product_en_sex = dd.from_pandas(pd_product_en_sex, npartitions=2)
+
+    product_en_sex["TEMP_COORD"] = product_en_sex["TEMP_COORD"].astype('str')
+
+    product_en_sex["COORDINATE"] = product_en_sex["TEMP_COORD"] + "." + product_en_sex["ThemeMemberId2"] + "." + product_en_sex["SexId"]
 
     product_en_sex = product_en_sex.drop(columns = ["ThemeMemberId2"])
 
     product_en_sex = product_en_sex[["REF_DATE", "DGUID", "GEO", "Member", "Sex", "UOM", 
                                      "UOM_ID", "SCALAR_FACTOR", "SCALAR_ID", "VECTOR", 
-                                     "COORDINATE", "Value", "STATUS", "DECIMALS", "ThemeID"]]
+                                     "COORDINATE", "Value", "STATUS", "DECIMALS"]]
 
     return product_en_sex
