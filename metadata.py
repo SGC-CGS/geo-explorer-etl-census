@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-df = pd.read_csv("./data/processed/product_en_sex.csv")
+df = pd.read_csv("./data/processed/product_en_sex.csv", encoding='utf-8')
 
 with open("template.json") as infile:
     j = json.load(infile)
@@ -27,10 +27,10 @@ grouped_sex['row'] = range(1, grouped_sex.shape[0] + 1)
 for index, row in grouped.iterrows():
    j["dimension"][0]["member"].append({
       # "memberId": json.dumps(list(grp['row']), sort_keys=True, indent=4),
-      "memberId": str(row['COORDINATE']).split(".")[0],
+      "memberId": int(str(row['COORDINATE'].split(".")[0])),
       "memberNameEn": row['GEO'],
-      "memberNameFr": ".",
-      "memberUomCode": "."
+      "memberNameFr": row['GEO'],
+      "memberUomCode": 300
    })
 
 for index, row in grouped_members.iterrows():
@@ -38,7 +38,7 @@ for index, row in grouped_members.iterrows():
       "memberId": row['row'],
       "memberNameEn": row['Member'],
       "memberNameFr": ".",
-      "memberUomCode": "."
+      "memberUomCode": 300
    })
 
 for index, row in grouped_sex.iterrows():
@@ -46,7 +46,7 @@ for index, row in grouped_sex.iterrows():
       "memberId": row['row'],
       "memberNameEn": row['Sex'],
       "memberNameFr": ".",
-      "memberUomCode": "."
+      "memberUomCode": 300
    })
 
 # for key, grp in df.groupby(['GEO']):
@@ -73,5 +73,5 @@ for index, row in grouped_sex.iterrows():
 #       "memberUomCode": "."
 #    })
 
-with open("./data/processed/metadata.json", "w") as outfile:
-    json.dump(j, outfile, indent=4)
+with open("./data/processed/metadata.json", "w", encoding='utf-8') as outfile:
+    json.dump(j, outfile, indent=4, ensure_ascii=False)

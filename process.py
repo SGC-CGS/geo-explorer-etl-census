@@ -39,13 +39,15 @@ class Creator:
         logger.info("Generate members by Theme ID.")
 
         self.current_members = helpers.members_by_themeID(self.profile_indicators, 11)
-
+        
     def generate_da(self):
 
         logger.info("Generate Dissemination Area (DA) file.")
 
         self.da = helpers.process_da(
             './data/raw/census/98-401-X2016044_eng_CSV/98-401-X2016044_English_CSV_data.csv')
+        
+        sys.exit(1)
 
         # self.da.compute().to_csv("./data/processed/da.csv", index=False)
 

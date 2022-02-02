@@ -30,13 +30,6 @@
             "dimensionNameFr": "",
             "hasUom": false,
             "member": []
-        },
-        {
-            "dimensionPositionId": 4,
-            "dimensionNameEn": "",
-            "dimensionNameFr": "",
-            "hasUom": true,
-            "member": []
         }
     ]
 }
