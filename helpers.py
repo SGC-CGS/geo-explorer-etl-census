@@ -1,3 +1,4 @@
+import io
 import pandas as pd
 import dask.dataframe as dd
 import sys
@@ -48,12 +49,10 @@ def members_by_themeID(profile_indicator_file, theme_number):
         members_by_themeID.current_members[members_by_themeID.current_members.ThemeID == int(theme_number)]
 
     # Remove ThemeID column.
-    # members_by_themeID.current_members = members_by_themeID.current_members[["MemberId"]]
+    members_by_themeID.current_members = members_by_themeID.current_members[["MemberId"]]
 
     # Change MemberId column to string type.
     members_by_themeID.current_members["MemberId"] = members_by_themeID.current_members["MemberId"].astype('str')
-
-    members_by_themeID.current_members.compute().to_csv("./data/interim/current_members.csv", index=False)
 
     return members_by_themeID.current_members
 
@@ -73,8 +72,6 @@ def process_da(da_file):
 
     result = geo_level_4.merge(members_by_themeID.current_members, how='inner',
                                left_on=['Member ID: Profile of Dissemination Areas (2247)'], right_on=['MemberId'])
-
-    result.compute().to_csv("./data/interim/da_joined.csv", index=False)
 
     # Drop the following columns.
     result = result.drop(
