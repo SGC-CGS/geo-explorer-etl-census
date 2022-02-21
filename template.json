@@ -1,14 +1,14 @@
 {
-    "productId": "",
-    "cubeTitleEn": "",
-    "cubeTitleFr": "",
-    "cubeStartDate": "",
-    "cubeEndDate": "",
+    "productId": "00000000",
+    "cubeTitleEn": "enTitle",
+    "cubeTitleFr": "frTitle",
+    "cubeStartDate": "2022-01-01",
+    "cubeEndDate": "2022-12-31",
     "frequencyCode": 0,
-    "releaseTime": "",
-    "subject": "",
-    "subjectCode": [],
-    "surveyCode": [],
+    "releaseTime": "2022-01-01",
+    "subject": "00",
+    "subjectCode": ["0000"],
+    "surveyCode": ["0000"],
     "dimension": [
         {
             "dimensionPositionId": 1,
